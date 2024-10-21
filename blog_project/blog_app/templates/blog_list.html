@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog List</title>
+</head>
+<body>
+    <h1>Blogs</h1>
+    <ul>            
+        {% for blog in blogs %}
+            <li>
+                <h3>{{ blog.title }}</h3>
+                <p>{{ blog.content }}</p>
+                <p><strong>By:</strong> {{ blog.author.name }}</p>
+                <button><a href="{% url 'blog-detail' blog.id %}">View Details</a></button>
+            </li>
+        {% empty %}
+            <li>No blogs available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Create a New Blog</h2>
+
+    <!-- Display form errors (invalid form submissions) -->
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="{% url 'blog-list' %}" method="POST" id="blog-form">
+        {% csrf_token %}
+        <!-- Blog Title Field with HTML validation -->
+        <input type="text" name="title" id="blog-title" placeholder="Blog Title" required minlength="5" maxlength="100">
+        <br><br>
+
+        <!-- Blog Content Field with HTML validation -->
+        <textarea name="content" id="blog-content" placeholder="Blog Content" required minlength="20" maxlength="1000"></textarea>
+        <br><br>
+
+        <!-- Hidden Author Field -->
+        <input type="hidden" name="author" id="blog-author" value="{{ user.id }}">
+        
+        <!-- Submit Button -->
+        <button type="submit">Create Blog</button>
+    </form>
+
+    <!-- Display Django form errors -->
+    {% if form_errors %}
+        <ul style="color: red;">
+            {% for field, errors in form_errors.items %}
+                <li>{{ field }}: {{ errors }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
