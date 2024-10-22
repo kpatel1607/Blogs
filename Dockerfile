@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run migrations and start the server (you can adjust the command as needed)
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python blog_project/manage.py makemigrations && python blog_project/manage.py migrate && python blog_project/manage.py runserver 127.0.0.1:8000"]
